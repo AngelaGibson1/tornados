@@ -1,0 +1,17 @@
+# Here is the big-query SQL pull for the data -- with this data, you can build a dashboard on tableau to see data tornado data from 2019 till now 
+
+SELECT 
+  EXTRACT(YEAR FROM timestamp) AS year,
+  state,
+  county,
+  ROUND(AVG(latitude), 5) AS avg_latitude,
+  ROUND(AVG(longitude), 5) AS avg_longitude,
+  COUNT(*) AS tornado_count
+FROM 
+  `bigquery-public-data.noaa_preliminary_severe_storms.tornado_reports`
+WHERE 
+  latitude IS NOT NULL AND longitude IS NOT NULL
+GROUP BY 
+  year, state, county
+ORDER BY 
+  year, state, tornado_count DESC;
